@@ -48,3 +48,10 @@ For inquiries or feedback, you can reach out via email:
    - **R**: Reset the ball to its original position.
    - **E**: Exit the program.
 
+## Features
+   - Enhanced user interface with advanced visuals.
+   - Additional movement logic and boundary conditions.
+   - Integration of sound effects for user feedback.
+   - Support for dynamic patterns with more complex behavior.
+## Licence
+   This project is licensed under the MIT License. See the LICENSE file for details.
