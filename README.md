@@ -1,8 +1,8 @@
 # Pattern Pong  
 
 ## Developers  
-- **Hamza Shabbir**  
-- **Muhammad Rajab**  
+- **[Hamza Shabbir](https://github.com/Hamza-s2004)**  
+- **[Muhammad Rajab](https://github.com/m-rajab24)**  
 
 ## Contact  
 For inquiries or feedback, you can reach out via email:  
