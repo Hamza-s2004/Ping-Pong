@@ -665,4 +665,123 @@ call draw_creator
 call draw_pattern_choice
 call check_user_choice_about_pattern_and_update_it
 
+main_start:
+	mov word[player_1_score],0
+	mov word[player_2_score],0
+	main_loop:
+		call delay
+		call delay
+		call clrScreen
+
+		cmp word[pattern_choice],1 ;we are checking that user want to print pattern or not if it is 0 it means user has not allowed to print pattern and if it is 1 it means user has allowed pattern
+		jne main_next
+
+		;this is used to print pattern
+		mov ax,[pattern_1]
+		push ax
+		call draw_pattern
+		;adding 160 to get to next line
+		add word[pattern_1],160
+		;checking if pattern is crossing boundary or not
+		mov ax,[lower_wall]
+		cmp [pattern_1],ax
+		jl pattern_2_print ;comparing if the pattern has crossed the boundary or not
+
+		mov ax,pattern_1
+		push ax
+		mov ax,190
+		push ax
+		call fix_pattern_crossing_boundary ;this is used to fix pattern crossing boundary problem
+
+		;print pattern 2
+		pattern_2_print:
+		mov ax,[pattern_2]
+		push ax
+		call draw_pattern ;i have pushed pattern size
+		add word[pattern_2],160 
+		mov ax,[lower_wall]
+		cmp [pattern_2],ax
+		jl pattern_3_print ;comparing if the pattern has crossed the boundary or not
+		mov ax,pattern_2
+		push ax
+		mov ax,230
+		push ax
+		call fix_pattern_crossing_boundary ;this is used to fix pattern crossing boundary problem
+
+		;printing pattern 3
+		pattern_3_print:
+		mov ax,[pattern_3]
+		push ax
+		call draw_pattern
+		add word[pattern_3],160
+		mov ax,[lower_wall]
+		cmp [pattern_3],ax
+		jl main_next ;comparing if the pattern has crossed the boundary or not
+		mov ax,pattern_3
+		push ax
+		mov ax,280
+		push ax
+		call fix_pattern_crossing_boundary ;this is used to fix pattern crossing boundary problem
+
+
+
+		main_next:
+		call draw_boundary
+		
+		;drawing and moving paddle
+		call draw_paddle
+		call move_paddle
+		
+		;drawing and moving ball
+		call draw_ball
+		call move_ball
+
+		
+		;drawing score of players
+		call draw_score
+		;drawing my name (Hamza) and group partner name: (Rajab) with roll numbers
+		call draw_creator
+
+		call check_ball_crossed_left_right_and_increase_score_count ;this will check left right boundary and increases the score of players
+		;checking score if it is grather or equal than 5 or not
+		cmp word[player_1_score],5
+		jl player2_score_check ;if it is less then checking player 2 score
+		mov ax,player_1_won ;pushing string 
+		push ax
+		mov ax,[player_won_length] ;pushing string size
+		push ax
+		jmp draw_player_won_and_check_for_restart_or_exit_loop ;jumping to the end because player 1 has won and now we need to print and show choice for exit and restart
+
+		player2_score_check: ;checking if player 2 has won or not
+		;again checking score
+		cmp word[player_2_score],5 ;i have condition of 5 score
+		jl main_loop
+		;passing parameters for function to print player 2 won
+		mov ax,player_2_won
+		push ax
+		mov ax,[player_won_length]
+		push ax
+	;reason of pushing this is because i have made 1 subroutine for both printing player won
+
+	draw_player_won_and_check_for_restart_or_exit_loop:
+		call clrScreen
+		call draw_player_won ;calling to draw who won (i have pushed player string address and length above ) 
+		call draw_restart_exit_option ;this will draw restart and exit option
+		;checking which key is pressed now
+		checker_for_exit_restart_game:
+		mov ah,0h
+		int 16h
+	
+		;ah will have the ascii of character which is pressed
+
+		cmp ah,0x13 ;'r' ;it is for restarting the gmae
+		je main_start
+		cmp ah,0x12 ;'e' it is to exit game
+		jne checker_for_exit_restart_game ;we did this to make infinite loop until user enter r or e 
+
+	main_loop_end:
+
+	mov ax,0x4c00
+	int 0x21
+
 
