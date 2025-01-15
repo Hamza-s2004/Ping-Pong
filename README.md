@@ -42,3 +42,10 @@ For inquiries or feedback, you can reach out via email:
   ```bash
     project.com
   ```
+<h2>Control</h2>
+<li>
+   **Arrow Keys**: Move the ball in the desired direction.
+   **P**: Enable or disable patterns during the simulation.
+   **R**: Reset the ball to its original position.
+   **ESC**: Exit the program.
+</li>
